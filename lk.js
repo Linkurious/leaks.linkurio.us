@@ -1,7 +1,7 @@
 
 var lk = (function() {
   var self = {};
-  var demoUrl = 'http://leaks.linkurio.us/';
+  var demoUrl = 'https://leaks.linkurio.us/';
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
