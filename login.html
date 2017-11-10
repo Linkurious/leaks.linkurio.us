@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login to demo of Linkurious Enterprise</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,NOODP,noimageindex">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="chance.min.js"></script>
+    <script src="lk.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        if (!lk.email) {
+          $('#gen').css('display', '');
+        }
+        lk.generateEmail();
+        $('#login').text(lk.email);
+      });
+    </script>
+  </head>
+  <body>
+
+    <div class="container-center">
+
+      <form target="_self" action="#" method="post">
+
+        <input name="usernameOrEmail" id="usernameOrEmail" type="hidden" value="" />
+        <input name="password" id="password" type="hidden" value="" />
+        <input name="path" id="path" type="hidden" value="/" />
+
+        <button id="registerBtn" class="btn btn-lg btn-primary" onclick="lk.register(this);" type="button">
+          Start demo
+        </button>
+      </form>
+
+      <p>
+          As for the Swiss Leaks and the Panama Papers scandal, <a href="https://www.icij.org/" target="_blank">the International Investigative Journalist Consortium (ICIJ)</a> network of 380 journalists used Linkurious data analytics software to investigate the Paradise Papers. Explore the leaks yourself in this demo.
+      </p>
+      <p>
+          The data is from ICIJ's  <a href="https://offshoreleaks.icij.org/" target="_blank">offshore leaks database</a>. It's a graph of almost 500,000 offshore companies, foundations and trusts from the Panama Papers, the Offshore Leaks and the Bahamas Leaks investigations. It also includes some of the offshore financial data from politicians featured in the Paradise Papers investigation.
+      </p>
+      <img src="offshore_leak_database.png" height="400" />
+    </div>
+  </body>
+</html>
