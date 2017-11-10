@@ -1,7 +1,8 @@
 
 var lk = (function() {
   var self = {};
-  var demoUrl = 'https://leaks.linkurio.us/';
+  var demoUrl = document.location.protocol + '//leaks.linkurio.us/';
+  var GROUPS = [6];
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
@@ -27,7 +28,7 @@ var lk = (function() {
     button.form.action = demoUrl + 'api/auth/loginRedirect';
 
     self.generateEmail();
-    console.log('created fake email: ' + self.email);
+    console.log('created random email: ' + self.email);
 
     wrappedButton.html('Connecting as "' + self.email + '" ...');
     $('input#usernameOrEmail').val(self.email);
@@ -66,7 +67,7 @@ var lk = (function() {
         type: 'POST',
         cache: false,
         url: demoUrl + 'api/admin/users',
-        data: JSON.stringify({username: self.email, email: self.email, password: 'demo', groups: [6]}),
+        data: JSON.stringify({username: self.email, email: self.email, password: 'demo', groups: GROUPS}),
         processData: false,
         contentType: 'application/json'
       }).fail(function (data) {
