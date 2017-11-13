@@ -69,6 +69,15 @@ header {
   color: #1E1D32;
 }
 
+.espace {
+  padding: 0 10px;
+}
+
+.disc {
+  text-align: center;
+  font-size: 65%;
+}
+
 .right {
   float: right;
 }

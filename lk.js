@@ -2,7 +2,7 @@
 var lk = (function() {
   var self = {};
   var demoUrl = document.location.protocol + '//leaks.linkurio.us/';
-  var GROUPS = [6];
+  var groups = [6];
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
@@ -19,13 +19,14 @@ var lk = (function() {
   };
 
   /**
-   * @param {HTMLButtonElement} button
+   * @param {HTMLFormElement} form
    * @param {object} wrappedButton jquery wrapped button
+   * @param {string} targetPath path to open upon logging in
    * @param {function} beforeDemoOpen
    * @param {function} failCb
    */
-  self.doLogin = function(button, wrappedButton, beforeDemoOpen, failCb) {
-    button.form.action = demoUrl + 'api/auth/loginRedirect';
+  self.doLogin = function(form, wrappedButton, targetPath, beforeDemoOpen, failCb) {
+    form.action = demoUrl + 'api/auth/loginRedirect';
 
     self.generateEmail();
     console.log('created random email: ' + self.email);
@@ -33,7 +34,7 @@ var lk = (function() {
     wrappedButton.html('Connecting as "' + self.email + '" ...');
     $('input#usernameOrEmail').val(self.email);
     $('input#password').val('demo');
-    $('input#path').val('/dashboard');
+    $('input#path').val(targetPath);
 
     // enable cross-domain (work in progress)
     $.support.cors = true;
@@ -67,7 +68,12 @@ var lk = (function() {
         type: 'POST',
         cache: false,
         url: demoUrl + 'api/admin/users',
-        data: JSON.stringify({username: self.email, email: self.email, password: 'demo', groups: GROUPS}),
+        data: JSON.stringify({
+          username: self.email,
+          email: self.email,
+          password: 'demo',
+          groups: groups
+        }),
         processData: false,
         contentType: 'application/json'
       }).fail(function (data) {
@@ -83,14 +89,19 @@ var lk = (function() {
           resetCookie();
 
           beforeDemoOpen();
-          button.form.submit();
+          form.submit();
         });
       });
     });
   };
 
-  self.register = function (button) {
+  /**
+   * @param {string} [targetPath="/dashboard"]
+   */
+  self.register = function(targetPath) {
+    if (!targetPath) { targetPath = '/dashboard'; }
     var wrappedButton = $('#registerBtn');
+    var form = $('#form').get(0);
     var buttonText = wrappedButton.html();
 
     wrappedButton.addClass('disabled');
@@ -112,11 +123,11 @@ var lk = (function() {
     $.ajax(demoUrl + 'api/auth/me').always(function(data, type) {
       if (type === 'error') {
         // not logged in
-        self.doLogin(button, wrappedButton, beforeDemoOpen, fail);
+        self.doLogin(form, wrappedButton, targetPath, beforeDemoOpen, fail);
       } else {
         console.log('already logged in');
         beforeDemoOpen();
-        document.location.href = demoUrl;
+        document.location.href = demoUrl + targetPath.substr(1);
       }
     });
   };
