@@ -19,13 +19,14 @@ var lk = (function() {
   };
 
   /**
-   * @param {HTMLButtonElement} button
+   * @param {HTMLFormElement} form
    * @param {object} wrappedButton jquery wrapped button
+   * @param {string} targetPath path to open upon logging in
    * @param {function} beforeDemoOpen
    * @param {function} failCb
    */
-  self.doLogin = function(button, wrappedButton, beforeDemoOpen, failCb) {
-    button.form.action = demoUrl + 'api/auth/loginRedirect';
+  self.doLogin = function(form, wrappedButton, targetPath, beforeDemoOpen, failCb) {
+    form.action = demoUrl + 'api/auth/loginRedirect&path=' + encodeURIComponent(targetPath);
 
     self.generateEmail();
     console.log('created random email: ' + self.email);
@@ -83,14 +84,19 @@ var lk = (function() {
           resetCookie();
 
           beforeDemoOpen();
-          button.form.submit();
+          form.submit();
         });
       });
     });
   };
 
-  self.register = function (button) {
+  /**
+   * @param {string} [targetPath="/"]
+   */
+  self.register = function(targetPath) {
+    if (!targetPath) { targetPath = '/'; }
     var wrappedButton = $('#registerBtn');
+    var form = $('#form').get(0);
     var buttonText = wrappedButton.html();
 
     wrappedButton.addClass('disabled');
@@ -112,7 +118,7 @@ var lk = (function() {
     $.ajax(demoUrl + 'api/auth/me').always(function(data, type) {
       if (type === 'error') {
         // not logged in
-        self.doLogin(button, wrappedButton, beforeDemoOpen, fail);
+        self.doLogin(form, wrappedButton, targetPath, beforeDemoOpen, fail);
       } else {
         console.log('already logged in');
         beforeDemoOpen();
