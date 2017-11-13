@@ -26,7 +26,7 @@ var lk = (function() {
    * @param {function} failCb
    */
   self.doLogin = function(form, wrappedButton, targetPath, beforeDemoOpen, failCb) {
-    form.action = demoUrl + 'api/auth/loginRedirect&path=' + encodeURIComponent(targetPath);
+    form.action = demoUrl + 'api/auth/loginRedirect?path=' + encodeURIComponent(targetPath);
 
     self.generateEmail();
     console.log('created random email: ' + self.email);
