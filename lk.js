@@ -3,13 +3,15 @@ var lk = (function() {
   var self = {};
   var demoUrl = document.location.protocol + '//leaks.linkurio.us/';
   var groups = [1];
+  var adminUser = 'demo';
+  var adminPass = 'demo_pass';
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
 
   self.getUrlVar = function (key) {
     var match = new RegExp('[?&]' + key + '=([^&#]*)').exec(window.location.search);
-    return match && decodeURIComponent(match[1]) || "";
+    return match && decodeURIComponent(match[1]) || '';
   };
 
   self.email = self.getUrlVar('u');
@@ -54,12 +56,12 @@ var lk = (function() {
       type: 'POST',
       cache: false,
       url: demoUrl + 'api/auth/login',
-      data: JSON.stringify({"usernameOrEmail": "demo", "password": "demo_pass"}),
+      data: JSON.stringify({usernameOrEmail: adminUser, password: adminPass}),
       processData: false,
       contentType: 'application/json',
-      dataType: "json"
+      dataType: 'json'
     }).fail(function (data) {
-      failCb('admin login', data, "Unable to connect to Linkurious.");
+      failCb('admin login', data, 'Unable to connect to Linkurious.');
     }).done(function() {
       console.log('logged in');
 
@@ -77,13 +79,13 @@ var lk = (function() {
         processData: false,
         contentType: 'application/json'
       }).fail(function (data) {
-        failCb('user create', data, "Could not create your account.");
+        failCb('user create', data, 'Could not create your account.');
       }).done(function() {
         console.log('demo account created');
 
         // log out the admin
         $.ajax(demoUrl + 'api/auth/logout').fail(function (data) {
-          failCb('admin logout', data, "Something went wrong while creating your account.");
+          failCb('admin logout', data, 'Something went wrong while creating your account.');
         }).done(function() {
           console.log('logged out');
           resetCookie();
